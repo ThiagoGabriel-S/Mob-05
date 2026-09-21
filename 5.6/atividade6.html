@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moedas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .campo {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        #erro {
+            color: #d32f2f;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Conversor de Moedas</h2>
+
+    
+    <div class="campo">
+        <label for="valorReais">Valor em Reais (R\$):</label>
+        <input type="number" id="valorReais" step="0.01" placeholder="Ex: 150.50">
+    </div>
+
+   
+    <div class="campo">
+        <label for="moedaDestino">Converter para:</label>
+        <select id="moedaDestino">
+            <option value="">Selecione uma moeda</option>
+            <option value="dolar">Dólar (USD)</option>
+            <option value="euro">Euro (EUR)</option>
+            <option value="peso">Peso Argentino (ARS)</option>
+        </select>
+    </div>
+
+  
+    <button id="btnConverter">Converter</button>
+
+    
+    <p id="erro"></p>
+    <p id="resultado"></p>
+
+    <script>
+        
+        const inputReais = document.getElementById('valorReais');
+        const selectMoeda = document.getElementById('moedaDestino');
+        const btnConverter = document.getElementById('btnConverter');
+        const txtResultado = document.getElementById('resultado');
+        const txtErro = document.getElementById('erro');
+
+       
+        const TAXA_DOLAR = 0.17;
+        const TAXA_EURO = 0.16;
+        const TAXA_PESO = 165.00;
+
+        
+        btnConverter.addEventListener('click', () => {
+            
+            txtErro.textContent = '';
+            txtResultado.textContent = '';
+
+           
+            const valorReais = parseFloat(inputReais.value);
+            const moedaSelecionada = selectMoeda.value;
+
+            
+            if (isNaN(valorReais) || valorReais <= 0 || !moedaSelecionada) {
+                txtErro.textContent = 'Por favor, insira um valor válido em reais e selecione uma moeda.';
+                return;
+            }
+
+            let valorConvertido = 0;
+            let simboloMoeda = '';
+
+            
+            if (moedaSelecionada === 'dolar') {
+                valorConvertido = valorReais * TAXA_DOLAR;
+                simboloMoeda = 'USD';
+            } else if (moedaSelecionada === 'euro') {
+                valorConvertido = valorReais * TAXA_EURO;
+                simboloMoeda = 'EUR';
+            } else if (moedaSelecionada === 'peso') {
+                valorConvertido = valorReais * TAXA_PESO;
+                simboloMoeda = 'ARS';
+            } else {
+                txtErro.textContent = 'Moeda inválida.';
+                return;
+            }
+
+            
+            txtResultado.textContent = `Resultado: ${simboloMoeda} ${valorConvertido.toFixed(2)}`;
+        });
+    </script>
+</body>
+
+</html>
